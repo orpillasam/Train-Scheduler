@@ -17,6 +17,8 @@ $(document).ready(function() {
   var time;
   var frequency;
 
+
+  //take the value from the firebase database and appends it to the screen
   database.ref().on('value', function(snapshot){
   	if(snapshot.child('trainName').exists() && snapshot.child('destination').exists()
   		&& snapshot.child('time').exists() && snapshot.child('frequency').exists())
@@ -26,31 +28,39 @@ $(document).ready(function() {
   		destination = snapshot.val().destination;
   		time = snapshot.val().time;
   		frequency = snapshot.val().frequency;
+  		console.log("firebase frequency is " + frequency)
   		
+  		//currently this just appends to the table but does not make a new row
+  		//to be updated
+ 
   		var scheduleDiv = $('<th>')
-  		console.log(trainName);
+  		// console.log(trainName);
   		var trainDiv = $('<td>').text(trainName);
   		var timeDiv = $('<td>').text(time);
   		var destinationDiv = $('<td>').text(destination);
   		var frequencyDiv = $('<td>').text(frequency);
-  		var arrivalDiv = $('<td>').text("filler");
+  		var arrivalDiv = $('<td>').text(nextArrival());
+  		var minutesAwayDiv = $('<td>').text(minutesAway());
   		scheduleDiv.append(trainDiv);
   		scheduleDiv.append(destinationDiv);
   		scheduleDiv.append(frequencyDiv);
   		scheduleDiv.append(arrivalDiv);
+  		scheduleDiv.append(minutesAwayDiv);
   		$('#trainTable').append(scheduleDiv);
 
   	}
   });
 
-   // Assumptions
-    var tFrequency = 5558;
-    // Time is 3:30 AM
-    var firstTime = "03:30";
+   // // Assumptions
+    
+   //  // Time is 3:30 AM
+   //  var firstTime = "03:30";
 
 
+   function nextArrival(){
 	 // First Time (pushed back 1 year to make sure it comes before current time)
-	var firstTimeCoverted = moment(firstTime, "hh:mm").subtract(1, 'years');
+   
+	var firstTimeCoverted = moment(time, "hh:mm").subtract(1, 'years');
 	console.log(firstTimeCoverted);
 
 	//Current Time
@@ -61,19 +71,48 @@ $(document).ready(function() {
 	var diffTime = moment().diff(moment(firstTimeCoverted), "minutes");
 
 	// Time apart (remainder)
-	var tRemainder = diffTime % tFrequency;
+	var tRemainder = diffTime % frequency;
 	console.log(tRemainder);
 
 	//minutes until Train
-	var tMinutesTillTrain = tFrequency = tRemainder;
+	var tMinutesTillTrain = frequency - tRemainder;
 	console.log('MINUTES TIL TRAIN: ' + tMinutesTillTrain);
 
 	//Next Train
 	var nextTrain = moment().add(tMinutesTillTrain, 'minutes');
-	console.log('ARRIVAL TIME: ' + moment(nextTrain).format('hh:mm'));
+	console.log('ARRIVAL TIME: ' + moment(nextTrain).format('HH:mm'));
 
+	return moment(nextTrain).format('HH:mm');
+}
 
+   function minutesAway(){
+	 // First Time (pushed back 1 year to make sure it comes before current time)
+   
+	var firstTimeCoverted = moment(time, "hh:mm").subtract(1, 'years');
+	console.log(firstTimeCoverted);
 
+	//Current Time
+	var currentTime = moment();
+	console.log('CURRENT TIME: ' + moment(currentTime).format('hh:mm:'));
+
+	//difference between the times
+	var diffTime = moment().diff(moment(firstTimeCoverted), "minutes");
+
+	// Time apart (remainder)
+	var tRemainder = diffTime % frequency;
+	console.log("difftime is " + diffTime + " frequency is " + frequency);
+	console.log("time remaining is " + tRemainder);
+
+	//minutes until Train
+	var tMinutesTillTrain = frequency - tRemainder;
+	console.log('MINUTES TIL TRAIN: ' + tMinutesTillTrain);
+
+	// //Next Train
+	// var nextTrain = moment().add(tMinutesTillTrain, 'minutes');
+	// console.log('ARRIVAL TIME: ' + moment(nextTrain).format('hh:mm'));
+
+	return tMinutesTillTrain;
+}
 
 
 
@@ -98,6 +137,8 @@ $('#search-button').on('click', function(){
 		frequency:frequency,
 
 	});
+
+
 
 	return false;
 });
