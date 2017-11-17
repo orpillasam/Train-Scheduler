@@ -7,19 +7,19 @@
 <!-- 	<link rel="stylesheet" type="text/css" href="assets/css/reset.css"> -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery.js"></script>
-	<script src="assets/javascript/logic.js"></script>
+ 	<link rel="stylesheet" type="text/css" href="assets/css/style.css"> 
+ 	<link href="https://fonts.googleapis.com/css?family=Ceviche+One" rel="stylesheet">
 
-<!-- 	<link rel="stylesheet" type="text/css" href="assets/css/style.css"> -->
-<!-- 	<script src="https://code.jquery.com/jquery.js"></script>
-	<script src="assets/javascript/logic.js"></script> -->
 </head>
 <body>
 
 	<div class='container'>
 		<div class="jumbotron jumbotron-fluid">
   			<div class="container">
-    			<h1 class="display-3 text-center">Anytime is Train Time</h1>
-    			<p class="lead text-center">Choo Choo. Chee Chee.</p>
+  				<div class="display-3 text-center"><img id ='hogwart' src ='assets/images/hogwarts_crest.png'>
+    			Hogwarts Station</div>
+    			<p class="lead text-center">No Muggles. No Exceptions.</p>
+    			<h2 id="current-time"></h2>
   			</div>
 		</div>
 
@@ -43,8 +43,6 @@
 		  	</div>
 		</div>
 
-		<div id='trainWell'></div>
-
 		<div class="card">
 		  <h4 class="card-header">Add Train</h4>
 		  <div class="card-body">
@@ -58,13 +56,14 @@
 		    		<input type="text" class="form-control" id="destination-input">
 		    	</div>
 		    	<div class="form-group">
-		    		<label for="time-input">First Train Time (HH:mm - military time)</label>
+		    		<label for="time-input">First Train Time (hh:mm)</label>
 		    		<input type="time" class="form-control" id="time-input">
 		    	</div>
 		    	<div class="frequency-input">
 		    		<label for="endYear">Frequency (min)</label>
 		    		<input type="text" class="form-control" id="frequency-input">
-		    	</div>		    			    	
+		    	</div>		  
+		    	<br>  			    	
 		    	<button type="button" class="btn btn-primary" id="submit-button">Add Train</button>
   
 		    </form>
@@ -73,5 +72,7 @@
 		<p></p>
 	
 	</div>
+
+	<script src="assets/javascript/logic.js"></script>
 
 </body>

@@ -13,12 +13,14 @@ $(document).ready(function() {
 
 	var database = firebase.database();
 
-
+	
+	//shows time
+	setInterval(function() {$('#current-time').text(moment().format('HH:mm:ss'))}, 1000);
+	
+	//submit button to add train to schedule
 	$('#submit-button').on('click', function(event){
 		event.preventDefault();
-
 		
-
 		var trainName = $('#train-input').val().trim();
 		var trainDestination = $('#destination-input').val().trim();
 		var trainTime = $('#time-input').val().trim();
@@ -49,11 +51,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// database.ref().once("value", function(snapshot) {
-	// 	snapshot.forEach(function(child){
-	// 	createTable(child.val());
-	// });
-	// });
+
   	//take the value from the firebase database and appends it to the screen
 	database.ref().on('child_added', function(childSnapshot, prevChildKey){
 
@@ -69,6 +67,7 @@ $(document).ready(function() {
 	  	console.log(trainDestination);
 	  	console.log(trainTime);
 	  	console.log(trainFrequency);
+
 
 
 	  	function nextArrival(){
