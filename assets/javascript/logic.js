@@ -13,14 +13,13 @@ $(document).ready(function() {
 
 	var database = firebase.database();
 
-	
 	//shows time
 	setInterval(function() {$('#current-time').text(moment().format('HH:mm:ss'))}, 1000);
-	
-	//submit button to add train to schedule
+
+
 	$('#submit-button').on('click', function(event){
 		event.preventDefault();
-		
+
 		var trainName = $('#train-input').val().trim();
 		var trainDestination = $('#destination-input').val().trim();
 		var trainTime = $('#time-input').val().trim();
@@ -46,17 +45,13 @@ $(document).ready(function() {
 		$('#time-input').val("");
 		$('#frequency-input').val('');
 
-
-
 		return false;
 	});
-
 
   	//take the value from the firebase database and appends it to the screen
 	database.ref().on('child_added', function(childSnapshot, prevChildKey){
 
 	  	console.log(childSnapshot.val());
-
 
 	  	var trainName = childSnapshot.val().trainName;
 	  	var trainDestination = childSnapshot.val().destination;
@@ -69,11 +64,10 @@ $(document).ready(function() {
 	  	console.log(trainFrequency);
 
 
-
 	  	function nextArrival(){
 
 			// First Time (pushed back 1 year to make sure it comes before current time)  
-			var firstTimeCoverted = moment(trainTime, "hh:mm").subtract(1, 'years');
+			var firstTimeCoverted = moment(trainTime, "hh:mm").subtract(1, 'days');
 			console.log(firstTimeCoverted);
 
 			//Current Time
@@ -93,16 +87,16 @@ $(document).ready(function() {
 
 			//Next Train
 			var nextTrain = moment().add(tMinutesTillTrain, 'minutes');
-			console.log('ARRIVAL TIME: ' + moment(nextTrain).format('HH:mm'));
+			console.log('ARRIVAL TIME: ' + moment(nextTrain).format('hh:mm a'));
 
-			return moment(nextTrain).format('HH:mm');
+			return moment(nextTrain).format('hh:mm a');
 		}
 
 		function minutesAway(){
 	
-			 // First Time (pushed back 1 year to make sure it comes before current time)
-			 var firstTimeCoverted = moment(trainTime, "hh:mm").subtract(1, 'years');
-			 console.log(firstTimeCoverted);
+			// First Time (pushed back 1 year to make sure it comes before current time)
+			var firstTimeCoverted = moment(trainTime, "hh:mm").subtract(1, 'years');
+			console.log(firstTimeCoverted);
 
 			//Current Time
 			var currentTime = moment();
@@ -120,8 +114,11 @@ $(document).ready(function() {
 			var tMinutesTillTrain = trainFrequency - tRemainder;
 			console.log('MINUTES TIL TRAIN: ' + tMinutesTillTrain);
 
-			return tMinutesTillTrain;
+			return tMinutesTillTrain; 
 		}
+
+		var removeButton = $('<button>').text('x');
+		removeButton.addClass('remove-button');
 
 		var scheduleDiv = $('<tr>')
 		scheduleDiv.append($('<td>'+ trainName + '</td>'))
@@ -129,9 +126,26 @@ $(document).ready(function() {
 		scheduleDiv.append($('<td>'+ trainFrequency + '</td>'))
 		scheduleDiv.append($('<td>'+ nextArrival() + '</td>'))
 		scheduleDiv.append($('<td>'+ minutesAway() + '</td>'))
+	
 
 		$('#trainTable').append(scheduleDiv);
 
 		});
 
+	// $("body").on('click', '.remove-button', (function() {
+
+	// 	console.log('remove button is clicked');
+
+	// 	 var ref = database.ref(); 
+	// 	 var survey=database.ref(newTrain);    //Eg path is company/employee                
+	// 	 survey.child(key).remove();          //Eg key is employee id
+
+	// }));
+
+	function updateTable(){
+		database.ref().on("value", function(snapshot) {
+
+
+	});
+	};
 });
