@@ -9,6 +9,12 @@ Assigned: 11/11/17
 
 Due: 11/18/17
 
+This was our first assignemnt to use a database, Firebase.  We had to save user inputted data in firebase, then call firebase to display on the screen.  
+
+This was particularly tricky, as calling the data, then dynamically creating tables on the screen was not easy to figure out without the in-class assignments.  Also, the updating the screen regularly, and not when data was inputted, was a bit of a challenge.
+
+Since this project was concurrent with Project#1, i did not put as much time into this as previous assignments. And for this reason, I didn't attempt  the harder of the two homework assignments.
+
 
 
 **************************************************************************************************
